@@ -16,7 +16,7 @@ const App: React.FunctionComponent = () => {
 					<>
 						<div style={styles.nav}>
 							<p style={{ fontSize: 20, width: 200 }}>
-								You're {isHost ? "a host" : "an audience"}
+								You {isHost ? "a host" : "an audience"}
 							</p>
 							<p style={styles.btn} onClick={() => setHost(!isHost)}>
 								Change Role
