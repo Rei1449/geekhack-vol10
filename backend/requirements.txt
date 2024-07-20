@@ -3,3 +3,4 @@ pydantic
 unicorn
 python-dotenv
 supabase
+websockets
