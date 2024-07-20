@@ -1,12 +1,17 @@
 "use client";
 import React, { CSSProperties, useState } from "react";
 import AgoraUIKit, { layout } from "agora-react-uikit";
+import { useParams } from "next/navigation";
 
-const App: React.FunctionComponent = () => {
+const Videocall = () => {
 	const [videocall, setVideocall] = useState(true);
 	const [isHost, setHost] = useState(true);
 	const [isPinned, setPinned] = useState(false);
 	const [username, setUsername] = useState("");
+
+	const params = useParams();
+	const video_id = params.video_id;
+	const techname = params.teckname;
 
 	return (
 		<div style={styles.container}>
@@ -28,7 +33,7 @@ const App: React.FunctionComponent = () => {
 						<AgoraUIKit
 							rtcProps={{
 								appId: "7e7137512f254b568961f83f85198bff",
-								channel: "test",
+								channel: `test${video_id}${techname}`,
 								token: null, //add your token if using app in secured mode
 								role: isHost ? "host" : "audience",
 								layout: isPinned ? layout.pin : layout.grid,
@@ -62,8 +67,8 @@ const App: React.FunctionComponent = () => {
 
 const styles = {
 	container: {
-		width: "100vw",
-		height: "100vh",
+		width: "50vw",
+		height: "50vh",
 		display: "flex",
 		flex: 1,
 		backgroundColor: "#007bff22",
@@ -86,4 +91,4 @@ const styles = {
 	input: { display: "flex", height: 24, alignSelf: "center" } as CSSProperties,
 };
 
-export default App;
+export default Videocall;
