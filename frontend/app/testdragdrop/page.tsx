@@ -40,7 +40,7 @@ export default function Page() {
 	};
 	useEffect(() => {
 		checkOverlap();
-	}, [draggingElementStatus]);
+	}, [draggingElementStatus, isOverlapping]);
 	return (
 		<div>
 			<div className="container">
