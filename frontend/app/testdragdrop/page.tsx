@@ -29,11 +29,11 @@ export default function Page() {
 			dragRect.bottom > dropRect.top;
 
 		if (isCurrentlyOverlapping && !isOverlapping) {
-			console.log("Element is inside the drop area!");
+			console.log("reactの部屋に入った");
 			// 重なった際に実行する関数をここに追加
 			setIsOverlapping(true);
 		} else if (!isCurrentlyOverlapping && isOverlapping) {
-			console.log("Element is no longer inside the drop area.");
+			console.log("reactの部屋から抜けた");
 			// 重ならなくなった際に実行する関数をここに追加
 			setIsOverlapping(false);
 		}
