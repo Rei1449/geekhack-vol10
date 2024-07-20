@@ -65,10 +65,10 @@ export default function Page() {
 				<div className="draggables">
 					<div
 						id="room1"
-						className="fixed right-0 left-0 m-auto w-[200px] h-[200px] bg-black text-white">
+						className="fixed top-[200px] right-0 left-0 m-auto w-[200px] h-[200px] bg-black text-white">
 						reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！reactやろうぜ！
 					</div>
-					<div className="fixed right-[50%] left-0 m-auto w-[200px] h-[200px] bg-gray-400 text-white">
+					<div className="fixed top-[200px] right-[50%] left-0 m-auto w-[200px] h-[200px] bg-gray-400 text-white">
 						vueから逃げるな！vueから逃げるな！vueから逃げるな！vueから逃げるな！vueから逃げるな！vueから逃げるな！vueから逃げるな！vueから逃げるな！
 					</div>
 					<div
