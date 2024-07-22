@@ -1,4 +1,5 @@
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
@@ -15,7 +16,7 @@ class ConnectionManager:
 
   async def broadcast(self, message: str):
     for connection in self.active_connections:
-      await connection.send_text(message)
+      await self.active_connections[connection].send_text(message)
 
 manager = ConnectionManager()
 
