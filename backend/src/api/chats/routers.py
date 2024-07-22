@@ -1,5 +1,6 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -14,9 +15,12 @@ class ConnectionManager:
   def disconnect(self, client_name: str) -> None:
     self.active_connections.pop(client_name)
 
-  async def broadcast(self, message: str):
+  async def broadcast(self, client_name: str, message: str) -> None:
     for connection in self.active_connections:
-      await self.active_connections[connection].send_text(message)
+      await self.active_connections[connection].send_json({"user_name": client_name, "message": message})
+  
+  async def unicast(self, client_name: str, message: str, receiver_name: str) -> None:
+    await self.active_connections[receiver_name].send_json({"user_name": client_name, "message": message})
 
 manager = ConnectionManager()
 
@@ -30,3 +34,17 @@ async def websocket_endpoint(websocket: WebSocket, client_name: str, room_id: st
   except WebSocketDisconnect:
     manager.disconnect(websocket)
     await manager.broadcast(f"Client #{client_name} left the chat")
+
+class Message(BaseModel):
+  client_name: str
+  message: str
+
+@router.post("/chat")
+async def send_message_all(message: Message):
+  await manager.broadcast(message.client_name, message.message)
+  return {"message": "Message sent"}
+
+@router.post("/chat/user/{receiver_name}")
+async def send_message_one(message: Message, receiver_name: str):
+  await manager.unicast(message.client_name, message.message, receiver_name)
+  return {"message": "Message sent"}
