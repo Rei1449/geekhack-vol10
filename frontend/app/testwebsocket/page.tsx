@@ -6,7 +6,8 @@ import { useState } from "react";
 const username = Math.random().toString(32).substring(2)
 
 // バックエンド側のWebSocketサーバーに接続
-const ws = new WebSocket(`ws://localhost:8080/ws/${username}/room/1`)
+// エラーが出たためコメントアウト
+// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/room/1`)
 
 console.log(username)
 
@@ -28,10 +29,11 @@ export default function WebSocketPage() {
   // バックエンド側からのメッセージを受信する
   // websocketのメッセージは全てonmessageにくるため
   // 個人向け・全体向け・部屋向けのメッセージを分ける必要がある
-  ws.onmessage = function(event) {
-    // setMessages([...messages, event.data])
-    console.log(event.data)
-  };
+  // エラーが出たためコメントアウト
+  // ws.onmessage = function(event) {
+  //   // setMessages([...messages, event.data])
+  //   console.log(event.data)
+  // };
 
   // バックエンドの特定のメソッドに送る用のもの
   // ping確認に使うのが良いかも
