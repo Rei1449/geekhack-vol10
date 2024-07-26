@@ -20,7 +20,7 @@ class ConnectionManager:
   async def unicast(self, client_name: str, message: str, receiver_name: str) -> None:
     await self.active_connections[receiver_name].send_json({"user_name": client_name, "message": message})
 
-  async def broadcast(self, client_name: str, message: str, receiver_users: List) -> None:
+  async def multicast(self, client_name: str, message: str, receiver_users: List) -> None:
     for receiver_user in receiver_users:
       await self.active_connections[receiver_user].send_json({"user_name": client_name, "message": message})
 
