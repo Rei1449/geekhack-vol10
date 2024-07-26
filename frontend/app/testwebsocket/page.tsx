@@ -7,7 +7,7 @@ const username = Math.random().toString(32).substring(2)
 
 // バックエンド側のWebSocketサーバーに接続
 // エラーが出たためコメントアウト
-// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/room/1`)
+// const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
 
 console.log(username)
 

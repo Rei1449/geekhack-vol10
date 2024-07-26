@@ -5,4 +5,7 @@ src
 ┃　┣━ chats  
 ┃　┃　┣━ routers.py # ユーザーエンドポイント  
 ┃　┃　┣━ services.py # サービス層、関数を記述する場所  
+┃　┣━ chatbot  
+┃　┃　┣━ routers.py  
+┃　┃　┣━ services.py  
 ┣━ main.py # アプリケーションのエントリーポイント  

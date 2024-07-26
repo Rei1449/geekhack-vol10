@@ -4,3 +4,5 @@ unicorn
 python-dotenv
 supabase
 websockets
+google-generativeai
+python-dotenv
