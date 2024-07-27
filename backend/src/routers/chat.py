@@ -9,6 +9,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, client_name: str):
   await manager.connect(websocket, client_name)
   try:
+    await manager.location_init(client_name)
     while True:
       data = await websocket.receive_text()
       await manager.broadcast(f"Client #{client_name} says: {data}")
