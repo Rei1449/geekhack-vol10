@@ -49,3 +49,14 @@ class ConnectionManager:
     # print(self.active_connections)
     for connection in self.active_connections:
       await self.active_connections[connection]['webSocket'].send_json({"user_name": client_name, 'x': x, 'y': y})
+
+  async def location_init(self, client_name: str) -> None:
+    active_user = {}
+    await self.active_connections[client_name]['webSocket'].send_json({"user_name": client_name})
+    for connection in self.active_connections:
+      await self.active_connections[connection]['webSocket'].send_json({"user_name": client_name, 'x': self.active_connections[connection]['x'], 'y': self.active_connections[connection]['y']})
+      active_user[connection] = {}
+      active_user[connection]['x'] = self.active_connections[connection]['x']
+      active_user[connection]['y'] = self.active_connections[connection]['y']
+    print(active_user)
+    await self.active_connections[client_name]['webSocket'].send_json({"user_locations": active_user})
