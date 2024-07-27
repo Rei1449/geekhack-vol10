@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .services import cahbot_gemini_flash, ChatBot
+from src.services.bot import cahbot_gemini_flash, ChatBot
 
 router = APIRouter()
 
