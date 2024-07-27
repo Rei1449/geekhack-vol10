@@ -28,8 +28,11 @@ class ConnectionManager:
     self.active_connections[client_name]['y'] = 0
     # print(self.active_connections)
 
-  def disconnect(self, client_name: str) -> None:
+  async def disconnect(self, client_name: str) -> None:
+    print(client_name)
     self.active_connections.pop(client_name)
+    for connection in self.active_connections:
+      await self.active_connections[connection]['webSocket'].send_json({"status":"drop_user", "user_name": client_name})
 
   async def broadcast(self, client_name: str, message: str) -> None:
     for connection in self.active_connections:
@@ -48,15 +51,15 @@ class ConnectionManager:
     self.active_connections[client_name]['y'] = y
     # print(self.active_connections)
     for connection in self.active_connections:
-      await self.active_connections[connection]['webSocket'].send_json({"user_name": client_name, 'x': x, 'y': y})
+      await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y})
 
   async def location_init(self, client_name: str) -> None:
     active_user = {}
     await self.active_connections[client_name]['webSocket'].send_json({"user_name": client_name})
     for connection in self.active_connections:
-      await self.active_connections[connection]['webSocket'].send_json({"user_name": client_name, 'x': self.active_connections[connection]['x'], 'y': self.active_connections[connection]['y']})
+      await self.active_connections[connection]['webSocket'].send_json({"status":"add_newuser","user_name": client_name, 'x': self.active_connections[connection]['x'], 'y': self.active_connections[connection]['y']})
       active_user[connection] = {}
       active_user[connection]['x'] = self.active_connections[connection]['x']
       active_user[connection]['y'] = self.active_connections[connection]['y']
     print(active_user)
-    await self.active_connections[client_name]['webSocket'].send_json({"user_locations": active_user})
+    await self.active_connections[client_name]['webSocket'].send_json({"status":"all_user","user_locations": active_user})
