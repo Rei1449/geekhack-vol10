@@ -10,7 +10,7 @@ const username = Math.random().toString(32).substring(2)
 
 // バックエンド側のWebSocketサーバーに接続
 // エラーが出たためコメントアウト
-const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
+// const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
 
 console.log(username)
 
@@ -42,53 +42,53 @@ export default function WebSocketPage() {
   // websocketのメッセージは全てonmessageにくるため
   // 個人向け・全体向け・部屋向けのメッセージを分ける必要がある
   // エラーが出たためコメントアウト
-  ws.onmessage = function(event) {
-    // setMessages([...messages, event.data])
-    const data = JSON.parse(event.data)
-    console.log(data)
+  // ws.onmessage = function(event) {
+  //   // setMessages([...messages, event.data])
+  //   const data = JSON.parse(event.data)
+  //   console.log(data)
 
-    switch (data.status){
-      case "add_newuser":
-        console.log("他のユーザーが参加しました。")
-        setActiveUser([...activeUser,{username:data.user_name, x:data.x, y:data.y}])
-        break
-      case "all_user":
-        let intoData = []
-        console.log("現在参加しているユーザーです。")
-        for (const key of Object.keys(data.user_locations)) {
-          console.log(`ユーザーnameは${key}、位置は x:${data.user_locations[key]['x']} y:${data.user_locations[key]['y']}`)
-          intoData.push({username:key, x: data.user_locations[key]['x'], y: data.user_locations[key]['y']})
-        }
-        setActiveUser(intoData)
-        break
-      case "update_location":
-        let updateUserData = activeUser
-        updateUserData.forEach((user, index) => {
-          if(user.username == data.user_name){
-            updateUserData.splice(index, 1)
-            updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
-            // breackさせたいがforEachでは出来ないので書き換えたい
-          }
-        })
-        setActiveUser(updateUserData)
-        break
-      case "drop_user":
-        console.log("dropユーザー",data.user_name)
-        let dropUserData = activeUser
-        dropUserData.forEach((user, index) => {
-          if(user.username == data.user_name){
-            updateUserData.splice(index, 1)
-            updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
-            // breackさせたいがforEachでは出来ないので書き換えたい
-          }
-        })
-        setActiveUser(dropUserData)
-        break
-      default:
-        console.log("Other")
-    }
-    // setActiveUser(event.data)
-  };
+  //   switch (data.status){
+  //     case "add_newuser":
+  //       console.log("他のユーザーが参加しました。")
+  //       setActiveUser([...activeUser,{username:data.user_name, x:data.x, y:data.y}])
+  //       break
+  //     case "all_user":
+  //       let intoData = []
+  //       console.log("現在参加しているユーザーです。")
+  //       for (const key of Object.keys(data.user_locations)) {
+  //         console.log(`ユーザーnameは${key}、位置は x:${data.user_locations[key]['x']} y:${data.user_locations[key]['y']}`)
+  //         intoData.push({username:key, x: data.user_locations[key]['x'], y: data.user_locations[key]['y']})
+  //       }
+  //       setActiveUser(intoData)
+  //       break
+  //     case "update_location":
+  //       let updateUserData = activeUser
+  //       updateUserData.forEach((user, index) => {
+  //         if(user.username == data.user_name){
+  //           updateUserData.splice(index, 1)
+  //           updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
+  //           // breackさせたいがforEachでは出来ないので書き換えたい
+  //         }
+  //       })
+  //       setActiveUser(updateUserData)
+  //       break
+  //     case "drop_user":
+  //       console.log("dropユーザー",data.user_name)
+  //       let dropUserData = activeUser
+  //       dropUserData.forEach((user, index) => {
+  //         if(user.username == data.user_name){
+  //           updateUserData.splice(index, 1)
+  //           updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
+  //           // breackさせたいがforEachでは出来ないので書き換えたい
+  //         }
+  //       })
+  //       setActiveUser(dropUserData)
+  //       break
+  //     default:
+  //       console.log("Other")
+  //   }
+  //   // setActiveUser(event.data)
+  // };
 
   // バックエンドの特定のメソッドに送る用のもの
   // ping確認に使うのが良いかも
