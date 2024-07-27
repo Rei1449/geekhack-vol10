@@ -3,6 +3,7 @@
 import Video from "@/components/Video";
 import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react"
 
 export default function Page() {
 	const [draggingElementStatus, handleDown] = useDraggable();
@@ -45,6 +46,23 @@ export default function Page() {
 		checkOverlap();
 	}, [draggingElementStatus]);
 
+	const testProfile = () => {
+		console.log("collect");
+	}
+	function Admin() {
+		const { status } = useSession({
+			required: true,
+			onUnauthenticated() {
+				// The user is not authenticated, handle it here.
+			},
+		})
+		if (status === "loading") {
+			return "Loading or not authenticated..."
+		}  
+		console.log("User is logged in");
+		// return "User is logged in"
+	}
+
 	return (
 		<div>
 			<div className="container">
@@ -81,11 +99,13 @@ export default function Page() {
 					<div
 						id="user-1"
 						className="element-1 draggable w-[90px]  h-[90px] bg-green-800"
-						onMouseDown={handleDown}></div>
+						onMouseDown={handleDown}
+						onMouseEnter={testProfile}></div>
 					<div
 						id="user-2"
 						className="element-1 draggable w-[90px] h-[90px] rounded-full bg-blue-800"
-						onMouseDown={handleDown}></div>
+						onMouseDown={handleDown}
+						onMouseEnter={Admin}></div>
 				</div>
 			</div>
 		</div>

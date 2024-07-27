@@ -15,7 +15,7 @@ async def websocket_endpoint(websocket: WebSocket, client_name: str):
       await manager.broadcast(f"Client #{client_name} says: {data}")
   except WebSocketDisconnect:
     manager.disconnect(websocket)
-    await manager.broadcast(f"Client #{client_name} left the chat")
+    # await manager.broadcast(f"Client #{client_name} left the chat")
 
 @router.post("/chat")
 async def send_message_all(message: Message):
