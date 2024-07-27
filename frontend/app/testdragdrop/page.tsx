@@ -1,6 +1,7 @@
 "use client";
 import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
+import Videocall from "../rooms/[techname]/[video_id]/page";
 
 export default function Page() {
 	const [draggingElementStatus, handleDown] = useDraggable();
@@ -32,17 +33,25 @@ export default function Page() {
 			console.log("reactの部屋に入った");
 			// 重なった際に実行する関数をここに追加
 			setIsOverlapping(true);
+			setVideocall(1);
 		} else if (!isCurrentlyOverlapping && isOverlapping) {
 			console.log("reactの部屋から抜けた");
 			// 重ならなくなった際に実行する関数をここに追加
 			setIsOverlapping(false);
+			setVideocall(null);
 		}
 	};
 	useEffect(() => {
 		checkOverlap();
 	}, [draggingElementStatus, isOverlapping]);
+
+	const [videocall, setVideocall] = useState<number | null>(null);
 	return (
 		<div>
+			<Videocall videocall={videocall} />
+			<Videocall videocall={videocall} />
+			<Videocall videocall={videocall} />
+			<Videocall videocall={videocall} />
 			<div className="container">
 				<div className="dragging-element-status border">
 					<p className="text-4xl font-bold">debug area</p>
