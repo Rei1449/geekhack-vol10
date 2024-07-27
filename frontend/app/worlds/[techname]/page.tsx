@@ -1,5 +1,6 @@
 "use client";
-import Videocall from "@/app/rooms/[techname]/[video_id]/page";
+
+import Video from "@/components/Video";
 import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
 
@@ -36,7 +37,7 @@ export default function Page() {
 				console.log("videocall", videocall);
 			} else if (!isCurrentlyOverlapping && room_id !== videocall) {
 				console.log(`${room_id}の部屋から抜けた`);
-				setVideocall(0);
+				//setVideocall(0);
 			}
 		});
 	};
@@ -62,7 +63,7 @@ export default function Page() {
 						{`isDown: ${draggingElementStatus.mouseStatus.isDown}, isMove: ${draggingElementStatus.mouseStatus.isMove}, isUp: ${draggingElementStatus.mouseStatus.isUp}`}
 					</div>
 				</div>
-				<Videocall videocall={videocall} setVideocall={setVideocall} />
+				<Video videocall={videocall} setVideocall={setVideocall} />
 
 				<div className="draggables">
 					<div

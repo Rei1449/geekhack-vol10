@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import AgoraUIKit, { layout } from "agora-react-uikit";
 import { useParams } from "next/navigation";
 
-const Videocall = ({
+export default function Video({
 	videocall,
 	setVideocall,
 }: {
 	videocall: number;
 	setVideocall: (value: number) => void;
-}) => {
+}) {
 	console.log(videocall);
 	const [isHost, setHost] = useState(true);
 	const [isPinned, setPinned] = useState(false);
@@ -32,12 +32,6 @@ const Videocall = ({
 							<p style={{ fontSize: 20, width: 200 }}>
 								You {isHost ? "a host" : "an audience"}
 							</p>
-							{/* <p style={styles.btn} onClick={() => setHost(!isHost)}>
-								Change Role
-							</p>
-							<p style={styles.btn} onClick={() => setPinned(!isPinned)}>
-								Change Layout
-							</p> */}
 						</div>
 						<AgoraUIKit
 							rtcProps={{
@@ -55,21 +49,8 @@ const Videocall = ({
 					</>
 				) : (
 					<></>
-					// <div style={styles.nav}>
-					// 	<input
-					// 		style={styles.input}
-					// 		placeholder="nickname"
-					// 		type="text"
-					// 		value={username}
-					// 		onChange={(e) => {
-					// 			setUsername(e.target.value);
-					// 		}}
-					// 	/>
-					// </div>
 				)}
 			</div>
 		</div>
 	);
-};
-
-export default Videocall;
+}
