@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from src.services.chat import ConnectionManager, Message, RoomMessage
+from src.services.chat import ConnectionManager, Message, RoomMessage, Location
 
 router = APIRouter()
 
@@ -9,6 +9,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, client_name: str):
   await manager.connect(websocket, client_name)
   try:
+    await manager.location_init(client_name)
     while True:
       data = await websocket.receive_text()
       await manager.broadcast(f"Client #{client_name} says: {data}")
@@ -30,3 +31,9 @@ async def send_message_one(message: Message, receiver_name: str):
 async def send_message_room(messages: RoomMessage):
   await manager.multicast(messages.client_name, messages.message, messages.room_users)
   return {"message": "Message room"}
+
+@router.post("/location")
+async def location_update(location: Location):
+  await manager.location_update(location.client_name, location.x, location.y)
+  return {"location": "location all"}
+
