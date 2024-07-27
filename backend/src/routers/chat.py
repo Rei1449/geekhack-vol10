@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from src.api.chats.services import ConnectionManager, Message, RoomMessage
+from src.services.chat import ConnectionManager, Message, RoomMessage
 
 router = APIRouter()
 
