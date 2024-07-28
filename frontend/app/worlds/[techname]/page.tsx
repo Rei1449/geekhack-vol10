@@ -15,7 +15,7 @@ interface UserData {
 
 // testwebsocket/pageから移植
 const username = Math.random().toString(32).substring(2)
-const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
+const ws = new WebSocket(`wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`)
 console.log(username)
 
 export default function Page({ searchParams }: { searchParams: { nickname: string, img: string } }) {
@@ -28,7 +28,7 @@ export default function Page({ searchParams }: { searchParams: { nickname: strin
 		// console.log(username)
 		console.log("型チェックしたい")
 		console.log(username,searchParams.nickname,searchParams.img)
-		const res = fetch(`http://localhost:8080/user/addprofile/${username}`,{
+		const res = fetch(`https://geekcampvol10-khr7sj2gqq-an.a.run.app/user/addprofile/${username}`,{
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
