@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.original-font {
+	font-family: "M PLUS Rounded 1c";
+	font-weight: bold;
+}
 /* .dragging-element-status {
 	position: fixed;
 	top: 0;
