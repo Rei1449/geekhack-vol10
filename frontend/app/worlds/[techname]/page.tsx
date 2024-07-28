@@ -4,6 +4,7 @@ import Video from "@/components/Video";
 import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 interface UserData {
 	username: string;
@@ -115,8 +116,8 @@ export default function Page({
 	const [draggingElementStatus, handleDown] = useDraggable();
 	const [videocall, setVideocall] = useState<number>(0);
 	const [activeUser, setActiveUser] = useState<UserData[]>([]); // フロントで保持するuserData
-
-	// const sendData = async () => {
+	const params = useParams(); // const sendData = async () => {
+	console.log("param", params);
 	// 	const res = await fetch(
 	// 		`http://localhost:8080/user/addprofile/${username}`,
 	// 		{
@@ -209,12 +210,47 @@ export default function Page({
 		console.log("User is logged in");
 		// return "User is logged in"
 	}
+	// ランダムにユーザー名を生成
 
+	// バックエンド側のWebSocketサーバーに接続
+	// エラーが出たためコメントアウト
+	//const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
+
+	const [message, setMessage] = useState("");
+	const [messages, setMessages] = useState<string[]>([]);
+	const [receiverName, setReceiverName] = useState("");
+	const handleChangeMessage = (e: any) => {
+		setMessage(e.target.value);
+	};
+
+	function sendMessageAll() {
+		const res = fetch("http://localhost:8080/chat", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				types: "broadcast",
+				client_name: String(username),
+				message: message,
+			}),
+		});
+	}
 	return (
 		<div>
 			<div className="container">
-				<div className="dragging-element-status border">
-					<p className="text-4xl font-bold">debug area</p>
+				<input
+					type="text"
+					onChange={handleChangeMessage}
+					placeholder="メッセージを入力してね"
+					value={message}
+				/>
+				<button onClick={sendMessageAll}>全員にメッセージを送信</button>
+				{messages.map((message, index) => (
+					<div key={index}>{message}</div>
+				))}
+				<div className="dragging-element-status">
+					{/* <p className="text-4xl font-bold">debug area</p>
 					<div className="dragging-element">{`draggingElement: ${
 						draggingElementStatus.draggingElement &&
 						draggingElementStatus.draggingElement.id
@@ -226,7 +262,7 @@ export default function Page({
 						}>{`x: ${draggingElementStatus.translate.x}, y: ${draggingElementStatus.translate.y}`}</div>
 					<div className="mouse-status">
 						{`isDown: ${draggingElementStatus.mouseStatus.isDown}, isMove: ${draggingElementStatus.mouseStatus.isMove}, isUp: ${draggingElementStatus.mouseStatus.isUp}`}
-					</div>
+					</div> */}
 
 					{/* activeuserのひょうじ */}
 					<div id="testUserData" className="m-10">
@@ -240,24 +276,33 @@ export default function Page({
 						})}
 					</div>
 				</div>
+				<h2 className="ml-5 font-bold text-4xl">{params.techname}の部屋</h2>
 				<Video videocall={videocall} setVideocall={setVideocall} />
 
-				<div className="draggables">
+				<div className="draggables w-full relative">
 					<div
 						id="room1"
-						className="fixed top-[200px] right-0 left-0 m-auto w-[200px] h-[200px] bg-black text-white"></div>
+						className="fixed top-[150px] left-[250px] m-auto w-[200px] h-[200px] bg-black text-white p-5">
+						room1
+					</div>
 					<div
 						id="room2"
-						className="fixed top-[200px] right-[50%] left-0 m-auto w-[200px] h-[200px] bg-gray-400 text-white"></div>
+						className="fixed top-[150px] right-[250px]  m-auto w-[200px] h-[200px] bg-gray-400 text-white p-5">
+						room2
+					</div>
 					<div
 						id="room3"
-						className="fixed top-[600px] right-[50%] left-0 m-auto w-[200px] h-[200px] bg-gray-700 text-white"></div>
+						className="fixed top-[500px] right-[250px]  m-auto w-[200px] h-[200px] bg-gray-700 text-white p-5">
+						room3
+					</div>
 					<div
 						id="room4"
-						className="fixed top-[600px] right-[20%] left-0 m-auto w-[200px] h-[200px] bg-gray-200 text-white"></div>
+						className="fixed top-[500px] left-[250px]  m-auto w-[200px] h-[200px] bg-gray-300 text-white p-5">
+						room4
+					</div>
 					<div
 						id="user-1"
-						className="element-1 draggable w-[90px]  h-[90px] bg-green-800"
+						className="element-1 draggable w-[90px]  h-[90px] bg-green-800 rounded-md"
 						onMouseDown={handleDown}
 						onMouseEnter={testProfile}></div>
 					{/* <div
