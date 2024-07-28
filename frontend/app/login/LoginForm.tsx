@@ -14,7 +14,7 @@ export default function LoginForm() {
 				google
 			</button> */}
 			{/* {isGitHubLoading ? <>loading</> : <>github</>} */}
-			<div className="justify-between flex items-center md:w-[75%] w-[92%] flex-wrap m-auto md:pt-40 pt-10 original-font">
+			<div className="justify-between flex items-center md:w-[75%] w-[92%] flex-wrap m-auto md:pt-[120px] pt-10 original-font">
 				<div className="md:w-[40%] w-full">
 					<h1 className="md:text-[130px] text-[80px] font-bold text-gray-900">
 						<span className="text-xl block">みんなの</span>Tech
