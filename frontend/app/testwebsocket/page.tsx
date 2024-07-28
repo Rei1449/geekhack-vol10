@@ -97,7 +97,7 @@ export default function WebSocketPage() {
   // }
 
   function sendMessageAll() {
-    const res = fetch("http://localhost:8080/chat", {
+    const res = fetch("https://geekcampvol10-khr7sj2gqq-an.a.run.app/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default function WebSocketPage() {
   }
 
   function sendMessageOne() {
-    const res = fetch(`http://localhost:8080/chat/user/${receiverName}`, {
+    const res = fetch(`https://geekcampvol10-khr7sj2gqq-an.a.run.app/chat/user/${receiverName}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
