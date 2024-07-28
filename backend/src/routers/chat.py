@@ -18,15 +18,15 @@ async def websocket_endpoint(websocket: WebSocket, client_name: str):
 
 @router.post("/chat")
 async def send_message_all(message: Message):
-  await manager.broadcast(message.client_name, message.message)
+  await manager.broadcast(message.client_name, message.message, message.type)
   return {"message": "message all"}
 
 @router.post("/chat/user/{receiver_name}")
 async def send_message_one(message: Message, receiver_name: str):
-  await manager.unicast(message.client_name, message.message, receiver_name)
+  await manager.unicast(message.client_name, message.message, receiver_name, message.type)
   return {"message": "Message user"}
 
 @router.post("/chat/room")
 async def send_message_room(messages: RoomMessage):
-  await manager.multicast(messages.client_name, messages.message, messages.room_users)
+  await manager.multicast(messages.client_name, messages.message, messages.room_users, messages.type)
   return {"message": "Message room"}

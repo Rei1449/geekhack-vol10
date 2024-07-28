@@ -13,22 +13,24 @@ class ConnectionManager:
   def disconnect(self, client_name: str) -> None:
     self.active_connections.pop(client_name)
 
-  async def broadcast(self, client_name: str, message: str) -> None:
+  async def broadcast(self, client_name: str, message: str, type: str) -> None:
     for connection in self.active_connections:
-      await self.active_connections[connection].send_json({"user_name": client_name, "message": message})
+      await self.active_connections[connection].send_json({"user_name": client_name, "message": message, "type": type})
   
-  async def unicast(self, client_name: str, message: str, receiver_name: str) -> None:
-    await self.active_connections[receiver_name].send_json({"user_name": client_name, "message": message})
+  async def unicast(self, client_name: str, message: str, receiver_name: str, type: str) -> None:
+    await self.active_connections[receiver_name].send_json({"user_name": client_name, "message": message, "type": type})
 
-  async def multicast(self, client_name: str, message: str, receiver_users: List) -> None:
+  async def multicast(self, client_name: str, message: str, receiver_users: List, type: str) -> None:
     for receiver_user in receiver_users:
-      await self.active_connections[receiver_user].send_json({"user_name": client_name, "message": message})
+      await self.active_connections[receiver_user].send_json({"user_name": client_name, "message": message, "type": type})
 
 class Message(BaseModel):
   client_name: str
   message: str
+  type: str
 
 class RoomMessage(BaseModel):
   client_name: str
   message: str
   room_users: List
+  type: str
