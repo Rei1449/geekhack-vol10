@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSession } from "next-auth/react"
 
-const TestuserProfile = () => {
+const TestGetProfile = () => {
 
     function Admin() {
         const { status, data } = useSession({
@@ -14,16 +14,16 @@ const TestuserProfile = () => {
             return "Loading or not authenticated..."
         }
         console.log(data.user.name)
-        console.log(data.user.image)
+        const userData = data.user.name
         return "User is logged in"
     }
 
     return (
         <>
-            <div>testuserProfile</div>
+            <div>TestGetProfile</div>
             <div>{Admin()}</div>
         </>
     )
 }
 
-export default TestuserProfile
+export default TestGetProfile

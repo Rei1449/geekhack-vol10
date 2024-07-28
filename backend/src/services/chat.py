@@ -16,6 +16,10 @@ class Location(BaseModel):
   x: int
   y: int
 
+class Profile(BaseModel):
+  nickname: str
+  img: str
+
 class ConnectionManager:
   def __init__(self):
     self.active_connections: dict[str: dict['webSocket':WebSocket,'x':int,'y':int]] = {}
@@ -26,7 +30,16 @@ class ConnectionManager:
     self.active_connections[client_name]['webSocket'] = websocket
     self.active_connections[client_name]['x'] = 0
     self.active_connections[client_name]['y'] = 0
+    self.active_connections[client_name]['nickname'] = "ニックネーム"
+    self.active_connections[client_name]['img'] = "https://avatars.githubusercontent.com/u/112296932?v=4"
     # print(self.active_connections)
+
+  async def add_profile(self, client_name: str, nickname: str, img: str) -> None:
+    self.active_connections[client_name]['nickname'] = nickname
+    self.active_connections[client_name]['img'] = img
+    for connection in self.active_connections: # この二行で全ユーザーにupdateしたuserの情報を送信
+      await self.active_connections[connection]['webSocket'].send_json({"status":"add_profile","user_name": client_name, 'x': self.active_connections[client_name]['x'], 'y': self.active_connections[client_name]['y'], 'nickname':self.active_connections[client_name]['nickname'], 'img':self.active_connections[client_name]['img']})
+
 
   async def disconnect(self, client_name: str) -> None:
     print(client_name)
@@ -54,12 +67,14 @@ class ConnectionManager:
       await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y})
 
   async def location_init(self, client_name: str) -> None:
-    active_user = {}
-    await self.active_connections[client_name]['webSocket'].send_json({"user_name": client_name})
-    for connection in self.active_connections:
-      await self.active_connections[connection]['webSocket'].send_json({"status":"add_newuser","user_name": client_name, 'x': self.active_connections[connection]['x'], 'y': self.active_connections[connection]['y']})
-      active_user[connection] = {}
+    active_user = {} # 新規ユーザーに送る全ユーザーの情報を入れるdictを用意
+    await self.active_connections[client_name]['webSocket'].send_json({"user_name": client_name}) # 新規ユーザーに自分のuser_nameを送信
+    for connection in self.active_connections: # この二行で全ユーザーに新入りの情報を送信
+      await self.active_connections[connection]['webSocket'].send_json({"status":"add_newuser","user_name": client_name, 'x': self.active_connections[client_name]['x'], 'y': self.active_connections[client_name]['y'], 'nickname':self.active_connections[client_name]['nickname'], 'img':self.active_connections[client_name]['img']})
+      active_user[connection] = {}                                           # 以下数行で新入りに送る全ユーザーの情報を作成（元のデータにはwebSocket型が含まれているためjson化出来なかったので新しいものを作成）
       active_user[connection]['x'] = self.active_connections[connection]['x']
       active_user[connection]['y'] = self.active_connections[connection]['y']
+      active_user[connection]['nickname'] = self.active_connections[connection]['nickname']
+      active_user[connection]['img'] = self.active_connections[connection]['img']
     print(active_user)
     await self.active_connections[client_name]['webSocket'].send_json({"status":"all_user","user_locations": active_user})

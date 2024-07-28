@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from src.services.chat import ConnectionManager, Message, RoomMessage, Location
+from src.services.chat import ConnectionManager, Message, RoomMessage, Location, Profile
 
 router = APIRouter()
 
@@ -7,6 +7,8 @@ manager = ConnectionManager()
 
 @router.websocket("/ws/{client_name}")
 async def websocket_endpoint(websocket: WebSocket, client_name: str):
+  print("おはよう")
+  # print(nickname,img)
   await manager.connect(websocket, client_name)
   try:
     await manager.location_init(client_name)
@@ -16,6 +18,11 @@ async def websocket_endpoint(websocket: WebSocket, client_name: str):
   except WebSocketDisconnect:
     manager.disconnect(websocket)
     # await manager.broadcast(f"Client #{client_name} left the chat")
+
+@router.post("/user/addprofile/{client_name}")
+async def add_profile(message:Profile, client_name: str):
+  await manager.add_profile(client_name, message.nickname, message.img)
+  return {"message": "add profile"}
 
 @router.post("/chat")
 async def send_message_all(message: Message):
