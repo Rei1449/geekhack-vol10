@@ -23,22 +23,22 @@ export default function Page({ searchParams }: { searchParams: { nickname: strin
 	const [videocall, setVideocall] = useState<number>(0);
 	const [activeUser, setActiveUser] = useState<UserData[]>([]) // フロントで保持するuserData
 
-	useEffect(()=>{
-		// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/addpfofile?nickname=${searchParams.nickname}&img=${searchParams.img}`)
-		// console.log(username)
-		console.log("型チェックしたい")
-		console.log(username,searchParams.nickname,searchParams.img)
-		const res = fetch(`https://geekcampvol10-khr7sj2gqq-an.a.run.app/user/addprofile/${username}`,{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body:JSON.stringify({
-				nickname: searchParams.nickname,
-				img: searchParams.img,
-			}),
-		})
-	}, [])
+	// useEffect(()=>{
+	// 	// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/addpfofile?nickname=${searchParams.nickname}&img=${searchParams.img}`)
+	// 	// console.log(username)
+	// 	console.log("型チェックしたい")
+	// 	console.log(username,searchParams.nickname,searchParams.img)
+	// 	const res = fetch(`http://localhost/8080/user/addprofile/${username}`,{
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body:JSON.stringify({
+	// 			nickname: searchParams.nickname,
+	// 			img: searchParams.img,
+	// 		}),
+	// 	})
+	// }, [])
 
 	ws.onmessage = function(event) {
 		// setMessages([...messages, event.data])
@@ -141,7 +141,7 @@ export default function Page({ searchParams }: { searchParams: { nickname: strin
 		console.log("User is logged in");
 		// return "User is logged in"
 	}
-
+	
 	return (
 		<div>
 			<div className="container">
