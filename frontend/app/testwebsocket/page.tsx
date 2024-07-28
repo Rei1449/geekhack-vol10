@@ -10,9 +10,9 @@ const username = Math.random().toString(32).substring(2)
 
 // バックエンド側のWebSocketサーバーに接続
 // エラーが出たためコメントアウト
-// const ws = new WebSocket(`wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`)
+const ws = new WebSocket(`wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`)
 // 開発用
-const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
+// const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
 
 console.log(username)
 
@@ -128,7 +128,7 @@ export default function WebSocketPage() {
   }
 
   const sendMessageChatbot = async () => {
-    const res = await fetch(`http://localhost:8080/chatbot`, {
+    const res = await fetch(`https://geekcampvol10-khr7sj2gqq-an.a.run.app/chatbot`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
