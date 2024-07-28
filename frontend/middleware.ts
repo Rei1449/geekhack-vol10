@@ -17,7 +17,9 @@ export default withAuth(
 		if (isAuthPage) {
 			//tokenが存在する場合リダイレクトする
 			if (isAuth) {
-				return NextResponse.redirect(new URL("/worlds", req.url));
+				return NextResponse.redirect(
+					"https://geekhack-vol10.vercel.app/worlds"
+				);
 			}
 			return null;
 		}
