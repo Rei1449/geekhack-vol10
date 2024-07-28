@@ -34,5 +34,5 @@ export default withAuth(
 	}
 );
 export const config = {
-	matcher: ["/worlds/:path", "/login", "/register"],
+	matcher: ["/worlds/:path", "/login", "/register", "/worlds"],
 };
