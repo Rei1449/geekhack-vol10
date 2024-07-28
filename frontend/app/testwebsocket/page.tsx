@@ -10,7 +10,9 @@ const username = Math.random().toString(32).substring(2)
 
 // バックエンド側のWebSocketサーバーに接続
 // エラーが出たためコメントアウト
-const ws = new WebSocket(`wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`)
+// const ws = new WebSocket(`wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`)
+// 開発用
+const ws = new WebSocket(`ws://localhost:8080/ws/${username}`)
 
 console.log(username)
 
@@ -23,6 +25,7 @@ interface UserData {
 export default function WebSocketPage() {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<string[]>([])
+  const [chatbotQuestion, setChatbotQuestion ] = useState("")
   const [receiverName, setReceiverName] = useState("")
   const [activeUser, setActiveUser] = useState<UserData[]>([])
 
@@ -124,6 +127,21 @@ export default function WebSocketPage() {
     console.log(res)
   }
 
+  const sendMessageChatbot = async () => {
+    const res = await fetch(`http://localhost:8080/chatbot`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: username,
+        // ルームにいるユーザーの名前の一覧を送信
+        room_users: [],
+      }),
+    })
+    console.log(res)
+  }
+
   return (
     <>
     <div>
@@ -147,6 +165,8 @@ export default function WebSocketPage() {
       }
     </div>
     <button onClick={()=>console.log(activeUser)}>ボタン</button>
+    <input type="text" onChange={(e) => setChatbotQuestion(e.target.value)} placeholder="chatbotに質問したい内容を書いてください" value={chatbotQuestion}/>
+    <button onClick={sendMessageChatbot}>chatbotに質問を送信</button>
     </>
   )
 }

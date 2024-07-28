@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from src.services.chat import ConnectionManager, Message, RoomMessage, Location, Profile
+from src.services.chat import ConnectionManager, Message, RoomMessage, Location, Profile, ChatBot
 
 router = APIRouter()
 
@@ -44,3 +44,7 @@ async def location_update(location: Location):
   await manager.location_update(location.client_name, location.x, location.y)
   return {"location": "location all"}
 
+@router.post("/chatbot")
+async def location_update(chatbot: ChatBot):
+  await manager.chatbot(chatbot.question, chatbot.room_users)
+  return {"cahtbot": "return sentence"}
