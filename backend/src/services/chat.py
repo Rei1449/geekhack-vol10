@@ -2,6 +2,13 @@ from fastapi import WebSocket
 from pydantic import BaseModel
 from typing import List
 
+import os
+from dotenv import load_dotenv
+
+import google.generativeai as genai
+
+load_dotenv()
+
 class Message(BaseModel):
   client_name: str
   message: str
@@ -19,6 +26,11 @@ class Location(BaseModel):
 class Profile(BaseModel):
   nickname: str
   img: str
+
+class ChatBot(BaseModel):
+  question: str
+  room_users: List
+
 
 class ConnectionManager:
   def __init__(self):
@@ -78,3 +90,15 @@ class ConnectionManager:
       active_user[connection]['img'] = self.active_connections[connection]['img']
     print(active_user)
     await self.active_connections[client_name]['webSocket'].send_json({"status":"all_user","user_locations": active_user})
+
+  async def chatbot(self, question: str, receiver_users: List) -> None:
+    res_text = cahbot_gemini_flash(question)
+    for receiver_user in receiver_users:
+      await self.active_connections[receiver_user]['webSocket'].send_json({"user_name": "chatbot", "message": res_text})
+
+def cahbot_gemini_flash(question: str) -> str:
+  genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+  model = genai.GenerativeModel("gemini-1.5-flash")
+  response = model.generate_content(f"あなたはITやプログラミングに詳しい人です。必ず100文字以内で返答します。{question}")
+  print(response.text)
+  return response.text
