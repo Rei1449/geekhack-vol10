@@ -147,7 +147,7 @@ export default function Page({
 		console.log("型チェックしたい");
 		// console.log("name", username, searchParams.nickname, searchParams.img);
 		sendData();
-	}, [draggingElementStatus]);
+	}, [draggingElementStatus.translate]);
 	
 	const checkOverlap = () => {
 		const dragElement = document.getElementById("user-1");
@@ -183,6 +183,7 @@ export default function Page({
 		});
 	};
 	useEffect(() => {
+		console.log("個々呼ばれる？")
 		checkOverlap();
 	}, [draggingElementStatus]);
 		
@@ -300,7 +301,7 @@ export default function Page({
 						id="user-1"
 						className="element-1 draggable w-[90px]  h-[90px] bg-green-800 rounded-md"
 						onMouseDown={handleDown}
-						onMouseEnter={testProfile}></div>
+						></div>
 					{/* <div
 						id="user-2"
 						className="element-1 draggable w-[90px] h-[90px] rounded-full bg-blue-800"
