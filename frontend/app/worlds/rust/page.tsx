@@ -43,62 +43,62 @@ export default function Page({
 	// );
 	const username = Math.random().toString(32).substring(2);
 	useEffect(() => {
-		// const ws = new WebSocket(
-		// 	// `wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`
-		// 	`ws://localhost:8080/ws/${searchParams.id}`
-		// );
-		// ws.onmessage = function (event) {
-		// 	// setMessages([...messages, event.data])
-		// 	const data = JSON.parse(event.data);
-		// 	console.log(data);
+		const ws = new WebSocket(
+			// `wss://geekcampvol10-khr7sj2gqq-an.a.run.app/ws/${username}`
+			`ws://localhost:8080/ws/${searchParams.id}`
+		);
+		ws.onmessage = function (event) {
+			// setMessages([...messages, event.data])
+			const data = JSON.parse(event.data);
+			console.log(data);
 
-		// 	switch (data.status) {
-		// 		case "add_newuser":
-		// 			console.log("他のユーザーが参加しました。");
-		// 			const inputUserData:UserInfo = {
-		// 				x:  data.x,
-		// 				y:  data.y,
-		// 				nickname:  data.nickname,
-		// 				img:  data.img
-		// 			};
-		// 			if (searchParams.id != data.user_name) {
-		// 				setActiveOtherUsers((preSetting) => ({
-		// 					...preSetting,
-		// 					[data.user_name]: inputUserData
-		// 				}))
-		// 			}
-		// 			break;
-		// 		case "all_user":
-		// 			console.log("現在参加しているユーザーです。");
-		// 			const inputUserDatas = data.user_locations;
-		// 			setActiveOtherUsers(inputUserDatas);
-		// 			break;
-		// 		case "update_location":
-		// 			if (searchParams.id != data.user_name) {
-		// 				setActiveOtherUsers((preSetting) => ({
-		// 					...preSetting,
-		// 					[data.user_name]: {x:data.x, y:data.y}
-		// 				}))
-		// 			}
-		// 			break;
-		// 		// case "drop_user":
-		// 			// console.log("dropユーザー",data.user_name)
-		// 		// 	let dropUserData = activeUser
-		// 		// 	dropUserData.forEach((user, index) => {
-		// 		// 		if(user.username == data.user_name){
-		// 		// 			updateUserData.splice(index, 1)
-		// 		// 			updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
-		// 		// 			// breackさせたいがforEachでは出来ないので書き換えたい
-		// 		// 		}
-		// 		// 	})
-		// 		// 	setActiveUser(dropUserData)
-		// 			// break
-		// 		default:
-		// 			console.log("Other");
-		// 	}
-		// 	console.log("更新後データ：");
-		// 	console.log(activeOtherUsers);
-		// };
+			switch (data.status) {
+				case "add_newuser":
+					console.log("他のユーザーが参加しました。");
+					const inputUserData:UserInfo = {
+						x:  data.x,
+						y:  data.y,
+						nickname:  data.nickname,
+						img:  data.img
+					};
+					if (searchParams.id != data.user_name) {
+						setActiveOtherUsers((preSetting) => ({
+							...preSetting,
+							[data.user_name]: inputUserData
+						}))
+					}
+					break;
+				case "all_user":
+					console.log("現在参加しているユーザーです。");
+					const inputUserDatas = data.user_locations;
+					setActiveOtherUsers(inputUserDatas);
+					break;
+				case "update_location":
+					if (searchParams.id != data.user_name) {
+						setActiveOtherUsers((preSetting) => ({
+							...preSetting,
+							[data.user_name]: {x:data.x, y:data.y}
+						}))
+					}
+					break;
+				// case "drop_user":
+					// console.log("dropユーザー",data.user_name)
+				// 	let dropUserData = activeUser
+				// 	dropUserData.forEach((user, index) => {
+				// 		if(user.username == data.user_name){
+				// 			updateUserData.splice(index, 1)
+				// 			updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
+				// 			// breackさせたいがforEachでは出来ないので書き換えたい
+				// 		}
+				// 	})
+				// 	setActiveUser(dropUserData)
+					// break
+				default:
+					console.log("Other");
+			}
+			console.log("更新後データ：");
+			console.log(activeOtherUsers);
+		};
 	}, []);
 	const { data } = useSession();
 	const authId = data?.user.id;
@@ -273,7 +273,8 @@ export default function Page({
 						})}
 					</div>
 				</div>
-				<h2 className="ml-5 font-bold text-4xl">{params.techname}の部屋</h2>
+				{/* <h2 className="ml-5 font-bold text-4xl">{params.techname}の部屋</h2> */}
+				<h2 className="ml-5 font-bold text-4xl">Rustの部屋</h2>
 				<Video videocall={videocall} setVideocall={setVideocall} />
 
 				<div className="draggables w-full relative">
