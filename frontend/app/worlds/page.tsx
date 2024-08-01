@@ -15,7 +15,8 @@ interface myDataDTO {
 export default function Page() {
 	const { data } = useSession();
 
-	const authId = data?.user.name;
+	const authId = data?.user.name; 
+	const randomAuthId = Math.random().toString(32).substring(2); // デバッグの為ランダムな値をidとします.
 	console.log(authId);
 	// const router = useRouter()
 	// const [myData, setMyData] = useState<myDataDTO>()
@@ -85,7 +86,7 @@ export default function Page() {
 				</Link>
 			</div>
 			<div className="px-5 py-5 border border-gray-200 rounded-md">
-				<Link href="/worlds/rust">
+				<Link href={`/worlds/rust?id=${randomAuthId}`}>
 					<img src="./tech-icons/rust.svg" />
 					<div className="font-bold text-2xl mt-10 m-auto w-fit">Rust</div>
 					<p className="font-bold text-blue-950 w-fit m-auto mt-5 text-xs">

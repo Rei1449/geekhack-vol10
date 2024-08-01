@@ -28,7 +28,6 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"app/rooms/[techname]",
-		"app/rooms/rust"
 	],
 	"exclude": ["node_modules"]
 }
