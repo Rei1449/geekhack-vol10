@@ -42,6 +42,8 @@ async def send_message_room(messages: RoomMessage):
 @router.post("/location")
 async def location_update(location: Location):
   await manager.location_update(location.client_name, location.x, location.y)
+  if location.x % 3 == 0:
+    print("userName : ", location.client_name, ", x : ", location.x, ", y : ", location.y)
   return {"location": "location all"}
 
 @router.post("/chatbot")

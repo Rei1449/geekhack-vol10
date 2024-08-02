@@ -13,6 +13,15 @@ interface UserData {
 	nickname: string;
 	img: string;
 }
+interface UserInfo {
+	x: number;
+	y: number;
+	nickname: string;
+	img: string;
+}
+interface OtherUserData {
+	[key: string]: UserInfo,
+}
 
 // testwebsocket/pageから移植
 // const username = Math.random().toString(32).substring(2);
@@ -46,53 +55,34 @@ export default function Page({
 			switch (data.status) {
 				case "add_newuser":
 					console.log("他のユーザーが参加しました。");
-					setActiveUser([
-						...activeUser,
-						{
-							username: data.user_name,
-							x: data.x,
-							y: data.y,
-							nickname: data.nickname,
-							img: data.img,
-						},
-					]);
+					const inputUserData:UserInfo = {
+						x:  data.x,
+						y:  data.y,
+						nickname:  data.nickname,
+						img:  data.img
+					};
+					if (searchParams.id != data.user_name) {
+						setActiveOtherUsers((preSetting) => ({
+							...preSetting,
+							[data.user_name]: inputUserData
+						}))
+					}
 					break;
 				case "all_user":
-					let intoData = [];
 					console.log("現在参加しているユーザーです。");
-					for (const key of Object.keys(data.user_locations)) {
-						console.log(
-							`ユーザーnameは${key}、位置は x:${data.user_locations[key]["x"]} y:${data.user_locations[key]["y"]}`
-						);
-						intoData.push({
-							username: key,
-							x: data.user_locations[key]["x"],
-							y: data.user_locations[key]["y"],
-							nickname: data.user_locations[key]["nickname"],
-							img: data.user_locations[key]["img"],
-						});
-					}
-					setActiveUser(intoData);
+					const inputUserDatas = data.user_locations;
+					setActiveOtherUsers(inputUserDatas);
 					break;
 				case "update_location":
-					let updateUserData = activeUser;
-					updateUserData.forEach((user, index) => {
-						if (user.username == data.user_name) {
-							updateUserData.splice(index, 1);
-							updateUserData.unshift({
-								username: data.user_name,
-								x: data.x,
-								y: data.y,
-								nickname: data.nickname,
-								img: data.img,
-							});
-							// breackさせたいがforEachでは出来ないので書き換えたい
-						}
-					});
-					setActiveUser(updateUserData);
+					if (searchParams.id != data.user_name) {
+						setActiveOtherUsers((preSetting) => ({
+							...preSetting,
+							[data.user_name]: {x:data.x, y:data.y}
+						}))
+					}
 					break;
 				// case "drop_user":
-				// 	console.log("dropユーザー",data.user_name)
+					// console.log("dropユーザー",data.user_name)
 				// 	let dropUserData = activeUser
 				// 	dropUserData.forEach((user, index) => {
 				// 		if(user.username == data.user_name){
@@ -102,11 +92,12 @@ export default function Page({
 				// 		}
 				// 	})
 				// 	setActiveUser(dropUserData)
-				// 	break
+					// break
 				default:
 					console.log("Other");
 			}
-			// setActiveUser(event.data)
+			console.log("更新後データ：");
+			console.log(activeOtherUsers);
 		};
 	}, []);
 	const { data } = useSession();
@@ -115,7 +106,8 @@ export default function Page({
 	console.log("image", data?.user.id);
 	const [draggingElementStatus, handleDown] = useDraggable();
 	const [videocall, setVideocall] = useState<number>(0);
-	const [activeUser, setActiveUser] = useState<UserData[]>([]); // フロントで保持するuserData
+	// const [activeUser, setActiveUser] = useState<UserData[]>([]); // フロントで保持するuserData
+	const [activeOtherUsers, setActiveOtherUsers] = useState<OtherUserData>({}); // id(name)をkeyとした連想配列で自分以外のuser情報
 	const params = useParams(); // const sendData = async () => {
 	console.log("param", params);
 	// 	const res = await fetch(
@@ -155,7 +147,7 @@ export default function Page({
 		console.log("型チェックしたい");
 		// console.log("name", username, searchParams.nickname, searchParams.img);
 		sendData();
-	}, [draggingElementStatus]);
+	}, [draggingElementStatus.translate]);
 
 	const checkOverlap = () => {
 		const dragElement = document.getElementById("user-1");
@@ -266,11 +258,15 @@ export default function Page({
 
 					{/* activeuserのひょうじ */}
 					<div id="testUserData" className="m-10">
-						{activeUser.map((user) => {
+						{Object.keys(activeOtherUsers).map((user) => {
 							return (
 								// <UserDataCard username={'test'} x={100} y={200} />
-								<div key={user.username}>
-									{user.username} {user.x} {user.y} {user.nickname} {user.img}
+								<div key={user}>
+									名前：{user} / 
+									x：{activeOtherUsers[`${user}`].x} / 
+									y：{activeOtherUsers[user].y} / 
+									{activeOtherUsers[user].nickname} / 
+									{activeOtherUsers[user].img} / 
 								</div>
 							);
 						})}

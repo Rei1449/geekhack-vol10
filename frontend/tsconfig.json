@@ -27,7 +27,7 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",
-		"app/rooms/[techname]"
+		"app/rooms/[techname]",
 	],
 	"exclude": ["node_modules"]
 }
