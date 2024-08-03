@@ -75,7 +75,7 @@ export default function Page({
 					setActiveOtherUsers(inputUserDatas);
 					break;
 				case "update_location":
-					if (searchParams.id != data.user_name) {
+					if (searchParams.id != data.user_name) {  // 自分以外の位置の変更を反映
 						setActiveOtherUsers((preSetting) => ({
 							...preSetting,
 							[data.user_name]: {x:data.x, y:data.y, nickname:data.nickname, img:data.img}
@@ -83,25 +83,21 @@ export default function Page({
 					}
 					break;
 				case "drop_user":
-					for (let key in activeOtherUsers){
-						console.log(key);
-					}
 					console.log("dropユーザー",data.user_name);
-					console.log(activeOtherUsers[data.user_name]);
-					if (activeOtherUsers["exit"]) {
+					if (data.user_name in activeOtherUsers) {
 						let delteAcviteUser = activeOtherUsers;
-						delete delteAcviteUser["exit"];
+						console.log(delteAcviteUser[data.user])
+						delete delteAcviteUser[data.user_name];
 						setActiveOtherUsers(delteAcviteUser);
-					} else {
-						console.log("存在しないユーザー",data.user_name)
+						console.log(activeOtherUsers);
+						
 					}
-					console.log(activeOtherUsers);
 					break
 				default:
 					console.log("Other");
 			}
 			console.log("更新後データ：");
-			console.log('%o',activeOtherUsers);
+			console.log(activeOtherUsers);
 		};
 	}, []);
 	const { data } = useSession();
@@ -148,6 +144,7 @@ export default function Page({
 	useEffect(() => {
 		// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/addpfofile?nickname=${searchParams.nickname}&img=${searchParams.img}`)
 		// console.log(username)
+		console.log("型チェックしたい");
 		// console.log("name", username, searchParams.nickname, searchParams.img);
 		sendData();
 	}, [draggingElementStatus.translate]);
