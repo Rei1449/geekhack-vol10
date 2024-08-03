@@ -75,7 +75,7 @@ export default function Page() {
 				</Link>
 			</div>
 			<div className="px-5 py-5 border border-gray-200 rounded-md">
-				<Link href="/worlds/typascript">
+				<Link href={`/worlds/typascript?id=${randomAuthId}`}>
 					<img src="./tech-icons/typescript.svg" />
 					<div className="font-bold text-2xl mt-10 m-auto w-fit">
 						TypeScript

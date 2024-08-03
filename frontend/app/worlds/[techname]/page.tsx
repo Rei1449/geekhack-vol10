@@ -5,6 +5,7 @@ import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import UserIcon from "./components/UserIcon";
 
 interface UserData {
 	username: string;
@@ -77,7 +78,7 @@ export default function Page({
 					if (searchParams.id != data.user_name) {
 						setActiveOtherUsers((preSetting) => ({
 							...preSetting,
-							[data.user_name]: {x:data.x, y:data.y}
+							[data.user_name]: {x:data.x, y:data.y, nickname:data.nickname, img:data.img}
 						}))
 					}
 					break;
@@ -301,11 +302,21 @@ export default function Page({
 						className="element-1 draggable w-[90px]  h-[90px] bg-green-800 rounded-md"
 						onMouseDown={handleDown}
 						onMouseEnter={testProfile}></div>
-					{/* <div
-						id="user-2"
-						className="element-1 draggable w-[90px] h-[90px] rounded-full bg-blue-800"
-						onMouseDown={handleDown}
-						onMouseEnter={Admin}></div> */}
+					
+					{/* otherUser表示 ft */}
+					{Object.keys(activeOtherUsers).map((user) => {
+						return (
+							<UserIcon x={activeOtherUsers[user].x} y={activeOtherUsers[user].y} nickname={activeOtherUsers[user].nickname} img={activeOtherUsers[user].img} />
+							// <UserDataCard username={'test'} x={100} y={200} />
+							// <div key={user}>
+							// 	名前：{user} / 
+							// 	x：{activeOtherUsers[`${user}`].x} / 
+							// 	y：{activeOtherUsers[user].y} / 
+							// 	{activeOtherUsers[user].nickname} / 
+							// 	{activeOtherUsers[user].img} / 
+							// </div>
+						);
+					})}
 				</div>
 			</div>
 		</div>

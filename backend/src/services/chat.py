@@ -76,7 +76,7 @@ class ConnectionManager:
     self.active_connections[client_name]['y'] = y
     # print(self.active_connections)
     for connection in self.active_connections:
-      await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y})
+      await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y, 'nickname':self.active_connections[client_name]['nickname'], 'img':self.active_connections[client_name]['img']})
 
   async def location_init(self, client_name: str) -> None:
     active_user = {} # 新規ユーザーに送る全ユーザーの情報を入れるdictを用意
