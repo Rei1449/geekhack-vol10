@@ -16,8 +16,9 @@ async def websocket_endpoint(websocket: WebSocket, client_name: str):
       data = await websocket.receive_text()
       await manager.broadcast(f"Client #{client_name} says: {data}")
   except WebSocketDisconnect:
-    manager.disconnect(websocket)
-    # await manager.broadcast(f"Client #{client_name} left the chat")
+    print("切断 ", client_name)
+    await manager.disconnect(websocket, client_name)
+    await manager.broadcast(client_name, f"Client #{client_name} left the chat")
 
 @router.post("/user/addprofile/{client_name}")
 async def add_profile(message:Profile, client_name: str):

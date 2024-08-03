@@ -44,7 +44,7 @@ class ConnectionManager:
     self.active_connections[client_name]['y'] = 0
     self.active_connections[client_name]['nickname'] = "ニックネーム"
     self.active_connections[client_name]['img'] = "https://avatars.githubusercontent.com/u/112296932?v=4"
-    # print(self.active_connections)
+    print("ユーザーconnect", self.active_connections)
 
   async def add_profile(self, client_name: str, nickname: str, img: str) -> None:
     self.active_connections[client_name]['nickname'] = nickname
@@ -53,9 +53,12 @@ class ConnectionManager:
       await self.active_connections[connection]['webSocket'].send_json({"status":"add_profile","user_name": client_name, 'x': self.active_connections[client_name]['x'], 'y': self.active_connections[client_name]['y'], 'nickname':self.active_connections[client_name]['nickname'], 'img':self.active_connections[client_name]['img']})
 
 
-  async def disconnect(self, client_name: str) -> None:
-    print(client_name)
-    self.active_connections.pop(client_name)
+  async def disconnect(self, websocket: WebSocket, client_name: str) -> None:
+    if client_name in self.active_connections:
+      v = self.active_connections.pop(client_name)
+      print("削除されたuser : ", v)
+    else:
+      print(client_name," は存在しません")
     for connection in self.active_connections:
       await self.active_connections[connection]['webSocket'].send_json({"status":"drop_user", "user_name": client_name})
 
@@ -71,12 +74,15 @@ class ConnectionManager:
       await self.active_connections[receiver_user]['webSocket'].send_json({"user_name": client_name, "message": message})
 
   async def location_update(self, client_name: str, x: int, y: int) -> None:
-    # print(self.active_connections)
-    self.active_connections[client_name]['x'] = x
-    self.active_connections[client_name]['y'] = y
-    # print(self.active_connections)
-    for connection in self.active_connections:
-      await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y})
+    if client_name in self.active_connections:
+      self.active_connections[client_name]['x'] = x
+      self.active_connections[client_name]['y'] = y
+      # print(self.active_connections)
+      for connection in self.active_connections:
+        await self.active_connections[connection]['webSocket'].send_json({"status":"update_location","user_name": client_name, 'x': x, 'y': y, 'nickname':self.active_connections[client_name]['nickname'], 'img':self.active_connections[client_name]['img']})
+    else:
+      print("存在しないuserが指定されました  :  ", client_name)
+      print("存在しないuserが指定されました  :  ", client_name)
 
   async def location_init(self, client_name: str) -> None:
     active_user = {} # 新規ユーザーに送る全ユーザーの情報を入れるdictを用意
