@@ -82,23 +82,26 @@ export default function Page({
 						}))
 					}
 					break;
-				// case "drop_user":
-					// console.log("dropユーザー",data.user_name)
-				// 	let dropUserData = activeUser
-				// 	dropUserData.forEach((user, index) => {
-				// 		if(user.username == data.user_name){
-				// 			updateUserData.splice(index, 1)
-				// 			updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
-				// 			// breackさせたいがforEachでは出来ないので書き換えたい
-				// 		}
-				// 	})
-				// 	setActiveUser(dropUserData)
-					// break
+				case "drop_user":
+					for (let key in activeOtherUsers){
+						console.log(key);
+					}
+					console.log("dropユーザー",data.user_name);
+					console.log(activeOtherUsers[data.user_name]);
+					if (activeOtherUsers["exit"]) {
+						let delteAcviteUser = activeOtherUsers;
+						delete delteAcviteUser["exit"];
+						setActiveOtherUsers(delteAcviteUser);
+					} else {
+						console.log("存在しないユーザー",data.user_name)
+					}
+					console.log(activeOtherUsers);
+					break
 				default:
 					console.log("Other");
 			}
 			console.log("更新後データ：");
-			console.log(activeOtherUsers);
+			console.log('%o',activeOtherUsers);
 		};
 	}, []);
 	const { data } = useSession();
@@ -145,7 +148,6 @@ export default function Page({
 	useEffect(() => {
 		// const ws = new WebSocket(`ws://localhost:8080/ws/${username}/addpfofile?nickname=${searchParams.nickname}&img=${searchParams.img}`)
 		// console.log(username)
-		console.log("型チェックしたい");
 		// console.log("name", username, searchParams.nickname, searchParams.img);
 		sendData();
 	}, [draggingElementStatus.translate]);
