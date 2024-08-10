@@ -5,6 +5,7 @@ import useDraggable from "@/utils/dragdrop/useDraggble";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import UserIcon from "./components/UserIcon";
 
 interface UserData {
 	username: string;
@@ -74,25 +75,24 @@ export default function Page({
 					setActiveOtherUsers(inputUserDatas);
 					break;
 				case "update_location":
-					if (searchParams.id != data.user_name) {
+					if (searchParams.id != data.user_name) {  // 自分以外の位置の変更を反映
 						setActiveOtherUsers((preSetting) => ({
 							...preSetting,
-							[data.user_name]: {x:data.x, y:data.y}
+							[data.user_name]: {x:data.x, y:data.y, nickname:data.nickname, img:data.img}
 						}))
 					}
 					break;
-				// case "drop_user":
-					// console.log("dropユーザー",data.user_name)
-				// 	let dropUserData = activeUser
-				// 	dropUserData.forEach((user, index) => {
-				// 		if(user.username == data.user_name){
-				// 			updateUserData.splice(index, 1)
-				// 			updateUserData.unshift({username:data.user_name,x:data.x,y:data.y})
-				// 			// breackさせたいがforEachでは出来ないので書き換えたい
-				// 		}
-				// 	})
-				// 	setActiveUser(dropUserData)
-					// break
+				case "drop_user":
+					console.log("dropユーザー",data.user_name);
+					if (data.user_name in activeOtherUsers) {
+						let delteAcviteUser = activeOtherUsers;
+						console.log(delteAcviteUser[data.user])
+						delete delteAcviteUser[data.user_name];
+						setActiveOtherUsers(delteAcviteUser);
+						console.log(activeOtherUsers);
+						
+					}
+					break
 				default:
 					console.log("Other");
 			}
@@ -301,11 +301,23 @@ export default function Page({
 						className="element-1 draggable w-[90px]  h-[90px] bg-green-800 rounded-md"
 						onMouseDown={handleDown}
 						onMouseEnter={testProfile}></div>
-					{/* <div
-						id="user-2"
-						className="element-1 draggable w-[90px] h-[90px] rounded-full bg-blue-800"
-						onMouseDown={handleDown}
-						onMouseEnter={Admin}></div> */}
+					
+					{/* otherUser表示 ft */}
+					{Object.keys(activeOtherUsers).map((user) => {
+						return (
+							<div key={user} >
+								<UserIcon x={activeOtherUsers[user].x} y={activeOtherUsers[user].y} nickname={activeOtherUsers[user].nickname} img={activeOtherUsers[user].img} />
+							</div>
+							// <UserDataCard username={'test'} x={100} y={200} />
+							// <div key={user}>
+							// 	名前：{user} / 
+							// 	x：{activeOtherUsers[`${user}`].x} / 
+							// 	y：{activeOtherUsers[user].y} / 
+							// 	{activeOtherUsers[user].nickname} / 
+							// 	{activeOtherUsers[user].img} / 
+							// </div>
+						);
+					})}
 				</div>
 			</div>
 		</div>
