@@ -305,7 +305,9 @@ export default function Page({
 					{/* otherUser表示 ft */}
 					{Object.keys(activeOtherUsers).map((user) => {
 						return (
-							<UserIcon x={activeOtherUsers[user].x} y={activeOtherUsers[user].y} nickname={activeOtherUsers[user].nickname} img={activeOtherUsers[user].img} />
+							<div key={user} >
+								<UserIcon x={activeOtherUsers[user].x} y={activeOtherUsers[user].y} nickname={activeOtherUsers[user].nickname} img={activeOtherUsers[user].img} />
+							</div>
 							// <UserDataCard username={'test'} x={100} y={200} />
 							// <div key={user}>
 							// 	名前：{user} / 
